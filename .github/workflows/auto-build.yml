@@ -4,6 +4,26 @@ on:
   push:
     branches:
       - '1.20.1'
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: '构建类型'
+        required: true
+        type: choice
+        default: 'release'
+        options:
+          - 'release'
+          - 'dev'
+      publish_maven:
+        description: '是否发布到Maven'
+        required: true
+        type: boolean
+        default: true
+      create_release:
+        description: '是否创建GitHub Release'
+        required: true
+        type: boolean
+        default: true
 
 concurrency:
   group: auto-build-${{ github.head_ref || github.ref }}
@@ -27,7 +47,12 @@ jobs:
         uses: ./.github/actions/build_setup
 
       - name: Build
-        run: ./gradlew build --build-cache
+        run: |
+          if [ "${{ inputs.build_type }}" = "dev" ]; then
+            ./gradlew build --build-cache -Pdev=true
+          else
+            ./gradlew build --build-cache
+          fi
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
@@ -37,6 +62,7 @@ jobs:
           retention-days: 30
 
       - name: Publish to Maven
+        if: ${{ inputs.publish_maven != false }}
         run: ./gradlew publish --build-cache
 
       - name: Get Version
@@ -48,6 +74,7 @@ jobs:
           echo "version=$BUILD_VER" >> $GITHUB_OUTPUT
 
       - name: Release
+        if: ${{ inputs.create_release != false }}
         id: release
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
