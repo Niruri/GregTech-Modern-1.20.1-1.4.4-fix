@@ -1,3 +1,81 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "https://maven.shedaniel.me/"
+        content {
+            includeGroup "me.shedaniel"
+            includeGroup "me.shedaniel.cloth"
+            includeGroup "dev.architectury"
+        }
+    }
+    maven {
+        url "https://maven2.bai.lol"
+        content {
+            includeGroup "mcp.mobius.waila"
+            includeGroup "lol.bai"
+        }
+    }
+    maven {
+        url "https://maven.parchmentmc.net/"
+        content {
+            includeGroup "org.parchmentmc.data"
+        }
+    }
+    // For the "No Indium?" mod
+    maven {
+        url 'https://maven.cafeteria.dev/releases/'
+        content {
+            includeGroup "me.luligabi"
+        }
+    }
+
+    maven {
+        name 'modmaven'
+        url "https://modmaven.dev/"
+        content {
+            includeGroup "mezz.jei"
+        }
+    }
+
+    maven {
+        name 'cursemaven'
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
+    maven {
+        url "https://maven.blamejared.com"
+        content {
+            includeGroup "vazkii.patchouli"
+            includeGroup "com.blamejared.crafttweaker"
+        }
+    }
+    maven { // for TOP
+        url "https://maven.k-4u.nl/"
+        content {
+            includeGroup "mcjty"
+        }
+    }
+    maven {
+        url "https://maven.latvian.dev/releases"
+        content {
+            includeGroup "dev.latvian.mods"
+            includeGroup "dev.latvian.apps"
+        }
+    }
+    maven { url = 'https://repo.spongepowered.org/maven' }
+    maven { url = "https://maven.covers1624.net/" }
+    maven { url = 'https://maven.theillusivec4.top/' }
+    maven { url = 'https://maven.melanx.de/' }
+    maven { url = "https://maven.architectury.dev" }
+    maven { url = "https://maven.saps.dev/minecraft" }
+    maven { url = 'https://www.jitpack.io' }
+    maven { url = "https://maven.terraformersmc.com/" }
+}
+
 dependencies {
     compileOnly 'org.jetbrains:annotations:24.1.0'
 

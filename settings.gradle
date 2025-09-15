@@ -29,7 +29,7 @@ dependencyResolutionManagement {
         def reiVersion = "12.1.725"
         def emiVersion = "1.1.13"
         def ae2Version = "15.0.18"
-        def kjsVersion = "2001.6.4-build.120"
+        def kjsVersion = "2001.6.5-build.20"
         def architecturyVersion = "9.2.14"
         def rhinoVersion = "2001.2.3-build.6"
         def auVersion = "1.20.1-0.6.0"
