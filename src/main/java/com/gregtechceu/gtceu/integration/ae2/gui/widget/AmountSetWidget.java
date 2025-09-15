@@ -37,10 +37,14 @@ public class AmountSetWidget extends Widget {
                 .setNumbersOnly(0, Integer.MAX_VALUE)
                 .setMaxStringLength(10);
     }
+    @OnlyIn(Dist.CLIENT)
+    public void setSlotIndexClient(int slotIndex) {
+        this.index = slotIndex;
+        writeClientAction(0, buf -> buf.writeVarInt(this.index));
+    }
 
     public void setSlotIndex(int slotIndex) {
         this.index = slotIndex;
-        writeClientAction(0, buf -> buf.writeVarInt(this.index));
     }
 
     public String getAmountStr() {

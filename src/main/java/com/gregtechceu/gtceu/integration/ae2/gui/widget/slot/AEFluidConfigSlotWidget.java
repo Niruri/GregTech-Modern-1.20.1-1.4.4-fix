@@ -114,7 +114,7 @@ public class AEFluidConfigSlotWidget extends AEConfigSlotWidget implements IGhos
                 writeClientAction(REMOVE_ID, buf -> {});
 
                 if (!parentWidget.isStocking()) {
-                    this.parentWidget.disableAmount();
+                    this.parentWidget.disableAmountClient();
                 }
             } else if (button == 0) {
                 // Left click to set/select
@@ -126,7 +126,7 @@ public class AEFluidConfigSlotWidget extends AEConfigSlotWidget implements IGhos
                 }
 
                 if (!parentWidget.isStocking()) {
-                    this.parentWidget.enableAmount(this.index);
+                    this.parentWidget.enableAmountClient(this.index);
                     this.select = true;
                 }
             }
