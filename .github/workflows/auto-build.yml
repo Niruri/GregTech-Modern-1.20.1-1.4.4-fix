@@ -1,0 +1,56 @@
+name: auto-build
+
+on:
+  push:
+    branches:
+      - '1.20.1'
+
+concurrency:
+  group: auto-build-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+      MAVEN_USER: ${{ secrets.MAVEN_USER }}
+      SNAPSHOT: true
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup Build
+        uses: ./.github/actions/build_setup
+
+      - name: Build
+        run: ./gradlew build --build-cache
+
+      - name: Publish to Maven
+        run: ./gradlew publish --build-cache
+
+      - name: Get Version
+        id: var
+        run: |
+          VER=$(./gradlew -q printVersion)
+          BUILD_VER=$VER-build_${{ github.run_number }}
+          for jar in ./build/libs/*; do mv "$jar" "${jar/${VER}-SNAPSHOT/${BUILD_VER}-SNAPSHOT}";done 2>/dev/null
+          echo "version=$BUILD_VER" >> $GITHUB_OUTPUT
+
+      - name: Release
+        id: release
+        uses: Kir-Antipov/mc-publish@v3.3.0
+        with:
+          github-tag: ${{ steps.var.outputs.version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            build/libs/!(*-@(dev|dev-all|dev-slim|javadoc)).jar
+
+      - name: Print Output
+        run: |
+          echo "Release tag: ${{ steps.release.outputs.github-tag }}"
+          echo "Release URL: ${{ steps.release.outputs.github-url }}"
+          echo "Released files: ${{ steps.release.outputs.github-files }}"
