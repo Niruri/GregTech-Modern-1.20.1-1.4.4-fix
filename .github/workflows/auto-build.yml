@@ -29,6 +29,13 @@ jobs:
       - name: Build
         run: ./gradlew build --build-cache
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gregtech-build-artifacts
+          path: build/libs/*.jar
+          retention-days: 30
+
       - name: Publish to Maven
         run: ./gradlew publish --build-cache
 
